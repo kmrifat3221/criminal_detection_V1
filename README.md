@@ -39,10 +39,6 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-## Configuration
-Create a `.env` file in the root directory with the following variables:
-```
-SECRET_KEY=your_secret_key
 DEBUG=True
 ```
 
@@ -55,9 +51,9 @@ DEBUG=True
 ## Security Note
 This system handles sensitive data. Ensure proper security measures are in place before deployment.
 
-Admin login
-username: Rifat
-Email: kmrifat3221@gmail.com
-Password: 1234
+## Admin login
+1. username: Rifat
+2. Email: kmrifat3221@gmail.com
+3. Password: 1234
 
 

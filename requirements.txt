@@ -1,0 +1,11 @@
+asgiref==3.8.1
+click==8.1.8
+colorama==0.4.6
+crispy-bootstrap4==2023.1
+Django==5.1.5
+django-crispy-forms==2.1
+numpy==2.2.2
+opencv-python==4.11.0.86
+pillow==11.1.0
+sqlparse==0.5.3
+tzdata==2025.1

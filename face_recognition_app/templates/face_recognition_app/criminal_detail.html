@@ -1,0 +1,91 @@
+{% extends 'face_recognition_app/base.html' %}
+
+{% block title %}{{ criminal.name }} - Criminal Details{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ criminal.photo.url }}" class="card-img-top" alt="{{ criminal.name }}">
+                <div class="card-body">
+                    <h3 class="card-title">{{ criminal.name }}</h3>
+                    <table class="table">
+                        <tr>
+                            <th>Age:</th>
+                            <td>{{ criminal.age }}</td>
+                        </tr>
+                        <tr>
+                            <th>Gender:</th>
+                            <td>{{ criminal.gender }}</td>
+                        </tr>
+                        <tr>
+                            <th>Crime Type:</th>
+                            <td>{{ criminal.crime_type }}</td>
+                        </tr>
+                        <tr>
+                            <th>Added:</th>
+                            <td>{{ criminal.date_added|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status:</th>
+                            <td>
+                                {% if criminal.is_active %}
+                                <span class="badge bg-danger">Active</span>
+                                {% else %}
+                                <span class="badge bg-secondary">Inactive</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Description</h5>
+                </div>
+                <div class="card-body">
+                    {{ criminal.description|linebreaks }}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Recent Detections</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date/Time</th>
+                                    <th>Location</th>
+                                    <th>Camera</th>
+                                    <th>Confidence</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detection in criminal.detection_set.all|dictsortreversed:"timestamp"|slice:":10" %}
+                                <tr>
+                                    <td>{{ detection.timestamp|date:"Y-m-d H:i:s" }}</td>
+                                    <td>{{ detection.location }}</td>
+                                    <td>{{ detection.camera_id }}</td>
+                                    <td>{{ detection.confidence_score|floatformat:2 }}%</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No detections recorded yet.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

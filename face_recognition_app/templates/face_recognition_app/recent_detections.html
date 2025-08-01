@@ -1,0 +1,75 @@
+{% extends 'face_recognition_app/base.html' %}
+
+{% block title %}Recent Detections - Criminal Detection System{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mb-4">Recent Detections</h2>
+
+    <div class="row">
+        {% for detection in detections %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">{{ detection.criminal.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Detection Image -->
+                        <div class="col-md-6 mb-3">
+                            {% if detection.image_captured %}
+                            <img src="{{ detection.image_captured.url }}" class="img-fluid rounded" alt="Detection Image">
+                            {% else %}
+                            <div class="alert alert-warning">No image captured</div>
+                            {% endif %}
+                        </div>
+                        <!-- Detection Video -->
+                        <div class="col-md-6 mb-3">
+                            {% if detection.video_clip %}
+                            <video class="w-100" controls>
+                                <source src="{{ detection.video_clip.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            {% else %}
+                            <div class="alert alert-warning">No video clip available</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="detection-info">
+                        <p><strong>Detected at:</strong> {{ detection.timestamp|date:"Y-m-d H:i:s" }}</p>
+                        <p><strong>Location:</strong> {{ detection.location }}</p>
+                        <p><strong>Confidence:</strong> {{ detection.confidence_score|floatformat:2 }}</p>
+                        <p><strong>Camera:</strong> {{ detection.camera_id }}</p>
+                    </div>
+
+                    <div class="criminal-info mt-3">
+                        <h6>Criminal Information:</h6>
+                        <p><strong>Age:</strong> {{ detection.criminal.age }}</p>
+                        <p><strong>Gender:</strong> {{ detection.criminal.gender }}</p>
+                        <p><strong>Crime Type:</strong> {{ detection.criminal.crime_type }}</p>
+                        <a href="{% url 'criminal-detail' detection.criminal.id %}" class="btn btn-info">
+                            <i class="fas fa-info-circle"></i> View Criminal Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                No recent detections found.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Auto-refresh script -->
+<script>
+    // Refresh the page every 30 seconds to show new detections
+    setTimeout(function() {
+        location.reload();
+    }, 30000);
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'face_recognition_app/base.html' %}
+
+{% block title %}Criminals List - Criminal Detection System{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Criminals Database</h2>
+        <a href="{% url 'criminal-add' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Criminal
+        </a>
+    </div>
+
+    <div class="row">
+        {% for criminal in criminals %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if criminal.photo %}
+                    <img src="{{ criminal.photo.url }}" class="card-img-top" alt="{{ criminal.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ criminal.name }}</h5>
+                    <p class="card-text">
+                        <strong>Age:</strong> {{ criminal.age }}<br>
+                        <strong>Gender:</strong> {{ criminal.gender }}<br>
+                        <strong>Crime Type:</strong> {{ criminal.crime_type }}
+                    </p>
+                    <p class="card-text">{{ criminal.description|truncatewords:30 }}</p>
+                    <a href="{% url 'criminal-detail' criminal.pk %}" class="btn btn-info">
+                        <i class="fas fa-info-circle"></i> View Details
+                    </a>
+                </div>
+                <div class="card-footer text-muted">
+                    Added: {{ criminal.date_added|date:"Y-m-d" }}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                No criminals in the database yet. Click "Add New Criminal" to add one.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'face_recognition_app/base.html' %}
+
+{% block title %}Dashboard - Criminal Detection System{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Stats Row -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Criminals</h5>
+                    <h2>{{ total_criminals }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Detections</h5>
+                    <h2>{{ total_detections }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Active Cameras</h5>
+                    <h2>{{ cameras.count }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera Feeds Row -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Live Camera Feeds</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for camera in cameras %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">{{ camera.location }}</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <img src="{% url 'video_feed' camera.camera_id %}" 
+                                         class="img-fluid" 
+                                         alt="Camera Feed">
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Detections -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Recent Detections</h5>
+                </div>
+                <div class="card-body" id="recent-detections">
+                    {% for detection in recent_detections %}
+                    <div class="card mb-2 detection-card">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ detection.criminal.name }}</h6>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    Detected at {{ detection.timestamp|date:"Y-m-d H:i:s" }}<br>
+                                    Location: {{ detection.location }}<br>
+                                    Confidence: {{ detection.confidence_score|floatformat:2 }}
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateRecentDetections() {
+    $.get('{% url "get-recent-detections" %}', function(data) {
+        const detectionsHtml = data.detections.map(detection => `
+            <div class="card mb-2 detection-card">
+                <div class="card-body">
+                    <h6 class="card-title">${detection.criminal_name}</h6>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Detected at ${detection.timestamp}<br>
+                            Location: ${detection.location}<br>
+                            Confidence: ${detection.confidence.toFixed(2)}
+                        </small>
+                    </p>
+                </div>
+            </div>
+        `).join('');
+        
+        $('#recent-detections').html(detectionsHtml);
+    });
+}
+
+// Update detections every 5 seconds
+setInterval(updateRecentDetections, 5000);
+</script>
+{% endblock %}

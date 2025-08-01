@@ -1,0 +1,15 @@
+{% extends 'face_recognition_app/base.html' %}
+
+{% block title %}Edit Camera - Criminal Detection System{% endblock %}
+
+{% block content %}
+<h2>Edit Camera</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Update Camera</button>
+    <a href="{% url 'camera_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% endblock %}

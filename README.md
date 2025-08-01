@@ -1,0 +1,63 @@
+# Real-Time Face Recognition and Criminal Detection System
+
+This Django-based system provides real-time face recognition and criminal detection capabilities using CCTV footage.
+
+## Features
+- Real-time face detection and recognition
+- Criminal database integration
+- High accuracy detection using machine learning
+- Automatic alert system
+- Live CCTV feed processing
+
+## Installation
+
+1. Clone the repository
+2. Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Apply migrations:
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+5. Create a superuser:
+```bash
+python manage.py createsuperuser
+```
+
+6. Run the development server:
+```bash
+python manage.py runserver
+```
+
+## Configuration
+Create a `.env` file in the root directory with the following variables:
+```
+SECRET_KEY=your_secret_key
+DEBUG=True
+```
+
+## Usage
+1. Access the admin panel at `/admin`
+2. Add criminal records with photos
+3. Start the real-time detection system
+4. Monitor alerts through the dashboard
+
+## Security Note
+This system handles sensitive data. Ensure proper security measures are in place before deployment.
+
+Admin login
+username: Rifat
+Email: kmrifat3221@gmail.com
+Password: 1234
+
+

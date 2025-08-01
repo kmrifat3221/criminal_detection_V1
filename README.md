@@ -1,6 +1,5 @@
 # Real-Time Face Recognition and Criminal Detection System
-
-This Django-based system provides real-time face recognition and criminal detection capabilities using CCTV footage.
+Built with Django, this system offers real-time face recognition and criminal identification using CCTV camera feeds.
 
 ## Features
 - Real-time face detection and recognition
